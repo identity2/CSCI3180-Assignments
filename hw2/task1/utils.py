@@ -24,8 +24,8 @@ else:
     def g(s): return s
     def b(s): return s
 
-def pos2sym(i):
+def pos_to_sym(i):
     return chr(ord('a')+i)
 
-def sym2pos(i):
+def sym_to_pos(i):
     return ord(i) - ord('a')

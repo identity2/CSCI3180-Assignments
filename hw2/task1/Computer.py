@@ -24,45 +24,45 @@ class Computer(Player):
     def __init__(self, id, board):
         super(Computer, self).__init__(id, board)
 
-    def nextPut(self):
+    def next_put(self):
         """
         This function randomly generates a legal PUT-movement and does the movement on
-        the board (by calling board.putPiece()).
+        the board (by calling board.put_piece()).
         """
         x = random.randint(0, 15)
-        while not self.board.checkPut(x):
+        while not self.board.check_put(x):
             x = random.randint(0, 15)
         
         print('{} [Put] (pos): {}'.format( \
-            g('Player 1') if self.id == 1 else b('Player 2'), pos2sym(x) ))
+            g('Player 1') if self.id == 1 else b('Player 2'), pos_to_sym(x) ))
 
-        self.board.putPiece(x, self)
+        self.board.put_piece(x, self)
         return x
 
-    def nextMove(self):
+    def next_move(self):
         """
         This function randomly generates a legal MOVE-movement (s,t) and then does the
-        movement on the board (by calling board.movePiece()).
+        movement on the board (by calling board.move_piece()).
         """
         xs, xt = random.randint(0, 15), random.randint(0, 15)
-        while not self.board.checkMove(xs, xt, self):
+        while not self.board.check_move(xs, xt, self):
             xs, xt = random.randint(0, 15), random.randint(0, 15)
 
         print('{} [Move] (from to): {} {}'.format( \
-            g('Player 1') if self.id == 1 else b('Player 2'), pos2sym(xs), pos2sym(xt) ))
-        self.board.movePiece(xs, xt, self)
+            g('Player 1') if self.id == 1 else b('Player 2'), pos_to_sym(xs), pos_to_sym(xt) ))
+        self.board.move_piece(xs, xt, self)
         return xt
 
-    def nextRemove(self, opponent):
+    def next_remove(self, opponent):
         """
         This function randomly generates a legal REMOVE-movement and does REMOVEmovement
-        on the board (by calling board.removePiece()).
+        on the board (by calling board.remove_piece()).
         """
         
         x = random.randint(0, 15)
-        while not self.board.checkRemove(x, opponent):
+        while not self.board.check_remove(x, opponent):
             x = random.randint(0, 15)
         
         print('{} [Remove] (pos): {}'.format( \
-            g('Player 1') if self.id == 1 else b('Player 2'), pos2sym(x)))
-        self.board.removePiece(x, opponent)
+            g('Player 1') if self.id == 1 else b('Player 2'), pos_to_sym(x)))
+        self.board.remove_piece(x, opponent)

@@ -36,7 +36,7 @@ class Board():
                       [2, 9], [9, 15]]
         # This parameter pre-defines all possible situations of connectivity of edges on the board.
 
-    def printBoard(self):
+    def print_board(self):
         def color(x):
             if x == '.': return x
             return g(x) if x == '#' else b(x)
@@ -60,14 +60,14 @@ class Board():
         print(color(self.state[13]), '-' * 9, color(self.state[14]), '-' * 9, color(self.state[15]), end='    '); 
         print('n', '-' * 9, 'o', '-' * 9, 'p')
 
-    def checkPut(self, pos):
+    def check_put(self, pos):
         """
         This function checks whether the PUT-movement is a legal movement. 
         The input arguments are the putting position.
         The output is a boolean variable.
         """
         valid_flag = True
-
+        
         if pos < 0 or pos > 15:
             valid_flag = False
         elif self.state[pos] != '.':
@@ -75,7 +75,7 @@ class Board():
 
         return valid_flag
 
-    def checkMove(self, s, t, player):
+    def check_move(self, s, t, player):
         """
         This function checks whether the MOVE-movement is a legal movement for the player. 
         The input arguments are the source position, the target position, and the player. 
@@ -100,7 +100,7 @@ class Board():
 
         return valid_flag
 
-    def checkRemove(self, pos, player):
+    def check_remove(self, pos, player):
         """
         This function checks whether the REMOVE-movement is a legal movement for the player. 
         The input arguments are the position on which the piece is expected to be removed and the player. 
@@ -114,42 +114,43 @@ class Board():
         
         return valid_flag
 
-    def putPiece(self, pos, player):
+    def put_piece(self, pos, player):
         """This function does the PUT-movement on the board without checking. 
         """
         self.state[pos] = player.get_symbol()
 
-    def movePiece(self, s, t, player):
+    def move_piece(self, s, t, player):
         """This function does the MOVE-movement on the board without checking.
         """
         self.state[s] = '.'
         self.state[t] = player.get_symbol()
 
-    def removePiece(self, pos, player):
+    def remove_piece(self, pos, player):
         """This function does the REMOVE-movement on the board without checking.
         """
         self.state[pos] = '.'
 
-    def formMill(self, pos, player):
+    def form_mill(self, pos, player):
         """
         This function returns a Boolean variable that represents whether it forms a mill at this position for the player.
         """
-        ifForm = False
+        if_form = False
+        
         for mill in self.mills:
             if pos in mill:
                 i, j, k = mill
                 if self.state[i] == player.get_symbol() and self.state[i] == self.state[j] and self.state[j] == self.state[k]: 
-                    ifForm = True
+                    if_form = True
                     break
 
-        return ifForm
+        return if_form
 
-    def checkWin(self, player, opponent):
+    def check_win(self, player, opponent):
         """
         This function returns a boolean variable that represents whether the current player wins. 
         If the current player wins the game, then it returns True. Otherwise, it returns False. 
         """
-        ifWin = False
+        if_win = False
 
         # Winning condition 1
         # check whether the opponent has less than 2 pieces. 
@@ -160,7 +161,7 @@ class Board():
                 num_pieces += 1
 
         if num_pieces <= 2: 
-            ifWin = True
+            if_win = True
         else:
             # Winning condition 2
             # check whether the opponent cannot move
@@ -186,6 +187,6 @@ class Board():
                         can_move = True
                         break
             if not can_move: 
-                ifWin = True
+                if_win = True
 
-        return ifWin
+        return if_win

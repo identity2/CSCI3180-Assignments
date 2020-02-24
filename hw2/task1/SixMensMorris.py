@@ -41,23 +41,23 @@ class SixMensMorris():
         self.players = []
         self.num_play = 0 
         
-    def nextPlayer(self):
+    def next_player(self):
         self.num_play += 1
         return self.players[ 1 - self.num_play % 2 ]
 
     def opponent(self, player):
         return self.players[ self.num_play % 2 ]
 
-    def checkWin(self, player):
-        ifWin = False
-        if self.board.checkWin(player, self.opponent(player)):
+    def check_win(self, player):
+        if_win = False
+        if self.board.check_win(player, self.opponent(player)):
             print('Congratulation to the winner: {}!'.format( 
                 g('Player 1') if player.get_id() == 1 else b('Player 2') 
             ))
-            ifWin = True
-        return ifWin
+            if_win = True
+        return if_win
 
-    def startGame(self):
+    def start_game(self):
         # Choose the player type for both players
         print('Please choose Player 1:')
         print('1. Human Player')
@@ -75,41 +75,41 @@ class SixMensMorris():
         print('2. Computer Player')
         x = input('Your choice is: ')
         if x == '1':
-            self.players.append(Human(2, self.board))
+            self.players.append(Human(0, self.board))
             print('Player 2 is a human.')
         elif x == '2':
-            self.players.append(Computer(2, self.board))
+            self.players.append(Computer(0, self.board))
             print('Player 2 is a computer.')
 
         # Start the game
-        self.board.printBoard()
+        self.board.print_board()
         end = False
         while not end:
-            player = self.nextPlayer()
+            player = self.next_player()
 
             if self.num_play <= 12:
                 # Phase 1
-                x = player.nextPut()
+                x = player.next_put()
             else:
                 # Phase 2
-                x = player.nextMove()
-            self.board.printBoard()
+                x = player.next_move()
+            self.board.print_board()
 
-            if self.num_play > 12 and self.checkWin(player):
+            if self.num_play > 12 and self.check_win(player):
                 end = True
             else:
-                if self.board.formMill(x, player):
+                if self.board.form_mill(x, player):
                     print('You form a mill!')
                     
-                    player.nextRemove(self.opponent(player))
+                    player.next_remove(self.opponent(player))
                     
-                    self.board.printBoard()
+                    self.board.print_board()
                 
-                if self.num_play > 12 and self.checkWin(player):
+                if self.num_play > 12 and self.check_win(player):
                     end = True
 
 if __name__ == '__main__':
     game = SixMensMorris()
-    game.startGame()
+    game.start_game()
 
 
