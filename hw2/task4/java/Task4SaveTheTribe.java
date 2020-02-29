@@ -24,14 +24,14 @@ public class Task4SaveTheTribe {
   private Task4Soldier soldier;
   private Spring spring;
   private Monster[] monsters;
-  private Merchant merchant;
+  private Task4Merchant merchant;
 
   private boolean gameEnabled;
 
   public Task4SaveTheTribe() {
     this.map = new Task4Map();
     this.soldier = new Task4Soldier();
-    this.merchant = new Merchant();
+    this.merchant = new Task4Merchant();
     this.spring = new Spring();
     this.monsters = new Monster[7];
     this.gameEnabled = true;
@@ -111,7 +111,7 @@ public class Task4SaveTheTribe {
       this.map.displayMap();
       this.soldier.displayInformation();
 
-      System.out.printf("%n=> What is the next step? (W = Up, S = Down, A = Left, D = Light.) Input: ");
+      System.out.printf("%n=> What is the next step? (W = Up, S = Down, A = Left, D = Right.) Input: ");
 
       String move = sc.nextLine();
 
@@ -142,8 +142,8 @@ public class Task4SaveTheTribe {
           ((Monster) occupiedObject).actionOnSoldier(this.soldier);
         } else if (occupiedObject instanceof Spring) {
           ((Spring) occupiedObject).actionOnSoldier(this.soldier);
-        } else if (occupiedObject instanceof Merchant) {
-          ((Merchant) occupiedObject).actionOnSoldier(this.soldier);
+        } else if (occupiedObject instanceof Task4Merchant) {
+          ((Task4Merchant) occupiedObject).actionOnSoldier(this.soldier);
         } else {
           this.soldier.move(newRow, newColumn);
           this.map.update(this.soldier, oldRow, oldColumn, newRow, newColumn);

@@ -18,19 +18,19 @@
 
 import java.util.Scanner;
 
-public class Merchant {
+public class Task4Merchant {
   private int elixirPrice;
   private int shieldPrice;
   private Pos pos;
 
-  public Merchant() {
+  public Task4Merchant() {
     this.pos = new Pos();
     this.shieldPrice = 2;
     this.elixirPrice = 1;
   }
 
   public void actionOnSoldier(Task4Soldier soldier) {
-    this.talk("Do you want to buy something? (1. Elixir, 2. Shield) Input: ");
+    this.talk("Do you want to buy something? (1. Elixir, 2. Shield, 3. Leave) Input: ");
 
     Scanner sc = new Scanner(System.in);
     String choice = sc.nextLine();
@@ -39,12 +39,18 @@ public class Merchant {
       if (soldier.getCoin() >= elixirPrice) {
         soldier.spendCoin(elixirPrice);
         soldier.addElixir();
+      } else {
+        System.out.printf("You don't have enough coins.%n%n");
       }
     } else if (choice.equalsIgnoreCase("2")) {
       if (soldier.getCoin() >= shieldPrice) {
         soldier.spendCoin(shieldPrice);
         soldier.addDefence();
+      } else {
+        System.out.printf("You don't have enough coins.%n%n");
       }
+    } else if (choice.equalsIgnoreCase("3")) {
+      return;
     } else {
       System.out.printf("=> Illegal choice!%n%n");
     }

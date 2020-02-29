@@ -92,7 +92,7 @@ class SaveTheTribe():
             self.map.display_map()
             self.soldier.display_information()
 
-            move = input("\n=> What is the next step? (W = Up, S = Down, A = Left, D = Light.) Input: ")
+            move = input("\n=> What is the next step? (W = Up, S = Down, A = Left, D = Right.) Input: ")
             pos = self.soldier.get_pos()
             old_row, old_column = pos.get_row(), pos.get_column()
             new_row, new_column = pos.get_row(), pos.get_column()

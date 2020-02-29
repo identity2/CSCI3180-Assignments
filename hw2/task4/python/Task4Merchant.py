@@ -18,14 +18,14 @@
 
 from Pos import Pos
 
-class Merchant():
+class Task4Merchant():
     def __init__(self):
         self.pos = Pos()
         self.shield_price = 2
         self.elixir_price = 1
     
     def action_on_soldier(self, soldier):
-        self.talk("Do you want to buy something? (1. Elixir, 2. Shield) Input: ")
+        self.talk("Do you want to buy something? (1. Elixir, 2. Shield, 3. Leave) Input: ")
 
         choice = input()
 
@@ -33,10 +33,16 @@ class Merchant():
             if soldier.get_coin() >= self.elixir_price:
                 soldier.spend_coin(self.elixir_price)
                 soldier.add_elixir()
+            else:
+                print("You don't have enough coins.\n")
         elif choice == "2":
             if soldier.get_coin() >= self.shield_price:
                 soldier.spend_coin(self.shield_price)
                 soldier.add_defence()
+            else:
+                print("You don't have enough coins.\n")
+        elif choice == "3":
+            return
         else:
             print("=> Illegal choice!\n")
     

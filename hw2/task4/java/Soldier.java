@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.Random;
 
 public class Soldier {
-  private int health;
+  protected int health;
   private int numElixirs;
   private Pos pos;
   private HashSet<Integer> keys;
@@ -34,10 +34,6 @@ public class Soldier {
      * It is possible for the soldier to obtain two identical keys in the game. To
      * simplify the operation, we use set here to remove duplicate keys.
      */
-  }
-
-  protected void setHealth(int health) {
-    this.health = health;
   }
 
   public int getHealth() {

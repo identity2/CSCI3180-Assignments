@@ -53,7 +53,7 @@ public class Task4Soldier extends Soldier {
     @Override
     public boolean loseHealth() {
         int loseAmount = this.defence >= 10 ? 0 : 10 - this.defence;
-        this.setHealth(this.getHealth() - loseAmount);
-        return this.getHealth() <= 0;
+        this.health -= loseAmount;
+        return this.health <= 0;
     }
 }

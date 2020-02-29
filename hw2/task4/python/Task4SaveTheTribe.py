@@ -21,7 +21,7 @@ import random
 from Map import Map
 from Task4Soldier import Task4Soldier
 from Spring import Spring
-from Merchant import Merchant
+from Task4Merchant import Task4Merchant
 from Task4Monster import Task4Monster
 
 class Task4SaveTheTribe():
@@ -29,7 +29,7 @@ class Task4SaveTheTribe():
         self.map = Map()
         self.soldier = Task4Soldier()
         self.spring = Spring()
-        self.merchant = Merchant()
+        self.merchant = Task4Merchant()
         self.monsters = []
         self.game_enabled = True
     
@@ -97,7 +97,7 @@ class Task4SaveTheTribe():
             self.map.display_map()
             self.soldier.display_information()
 
-            move = input("\n=> What is the next step? (W = Up, S = Down, A = Left, D = Light.) Input: ")
+            move = input("\n=> What is the next step? (W = Up, S = Down, A = Left, D = Right.) Input: ")
             pos = self.soldier.get_pos()
             old_row, old_column = pos.get_row(), pos.get_column()
             new_row, new_column = pos.get_row(), pos.get_column()
