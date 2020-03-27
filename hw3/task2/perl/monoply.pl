@@ -66,9 +66,10 @@ sub printGameBoard {
 }
 
 sub termination_check {
-
-    # ...
-
+    if ($cur_player->{money} <= 0) {
+        return 1;
+    }
+    return 0;
 }
 
 sub throwDice {
@@ -80,15 +81,62 @@ sub throwDice {
 }
 
 sub main {
-    while (termination_check()){
+    my $game_ended = 0;
+    while ($game_ended != 1){
         printGameBoard();
         foreach my $player (@players) {
             $player->printAsset();
         }
+        
+        print("Player ".$cur_player->{name}."'s term.\n");
+        
+        # Pay the $200 fixed fee.
+        $cur_player->payDue();
 
-        # ...
+        # Player not in jail.
+        my $dice_step;
+        if ($cur_player->{num_rounds_in_jail} == 0) {
+            # Throw the dice.
+            print("Pay \$500 to throw two dice? [y/n]\n");
+            my $choice = <STDIN>;
+            
+            chomp($choice);
+            if ($choice eq "y") {
+                local $num_dices = 2;      # dynamic scoping.
+                $dice_step = throwDice();
 
+                local $Player::due;        # dynamic scoping
+                local $Player::handling_fee_rate; # dynamic scoping
+                $Player::due = 500;   
+                $Player::handling_fee_rate = 0.05;
+                $cur_player->payDue();
+            } else {
+                $dice_step = throwDice();
+            }
+            
+            print("Points of dices: ".$dice_step."\n")
+        }
+
+        # Move the player and show new gameboard.
+        $cur_player->move($dice_step);
+        printGameBoard();
+        
+        # Perform slot action.
+        my $cur_slot = $game_board[$cur_player->{position}];
+        $cur_slot->stepOn();
+
+        # Check if the game should end.
+        if (termination_check()) {
+            $game_ended = 1;
+        }
+
+        # Switch to the next player.
+        $cur_player_idx = ($cur_player_idx + 1) % $num_players;
+        $cur_player = $players[$cur_player_idx];
     }
+
+    # Game over message.
+    print("Game over! winner: ".$cur_player->{name}.".\n");
 }
 
 main();

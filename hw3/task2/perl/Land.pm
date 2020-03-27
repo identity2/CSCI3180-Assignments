@@ -22,33 +22,86 @@ sub print {
 }
 
 sub buyLand {
-
-    # ...
-
+    my $self = shift;
+    local $Player::due = 1000;   # dynamic scoping
+    local $Player::handling_fee_rate = 0.1; # dynamic scoping
     $main::cur_player->payDue();
+
+    $self->{owner} = $main::cur_player;
 }
 
 sub upgradeLand {
+    my $self = shift;
+    my $cost = shift;
 
-    # ... 
-
+    local $Player::handling_fee_rate = 0.1; # dynamic scoping.
+    local $Player::due = $cost; # dynamic scoping
     $main::cur_player->payDue();
+
+    $self->{level} = $self->{level} + 1;
 }
 
 sub chargeToll {
+    my $self = shift;
+    my $cost = shift;
+    my $tax = shift;
 
-    # ...
-
+    local $Player::due = $cost;   # dynamic scoping
     $main::cur_player->payDue();
 
-    # ...
-
+    $Player::due = 0;
+    local $Player::income = $cost;  # dynamic scoping
+    local $Player::tax_rate = $tax; # dynamic scoping
     $self->{owner}->payDue();
 }
 
 sub stepOn {
-
-    # ...
+    my $self = shift;
+    
+    if (!defined($self->{owner})) {
+        # Unowned.
+        print("Pay \$1000 to buy the land? [y/n]\n");
+        my $choice = <STDIN>;
+        chomp($choice);
+        if ($choice eq "y") {
+            $self->buyLand();
+        }
+    } elsif ($self->{owner} == $main::cur_player) {
+        # Owned by the player.
+        my $cost;
+        if ($self->{level} == 0) {
+            $cost = 1000;
+        } elsif ($self->{level} == 1) {
+            $cost = 2000;
+        } elsif ($self->{level} == 2) {
+            $cost = 5000;
+        }
+        print("Pay \$".$cost." to upgrade the land? [y/n]\n");
+        my $choice = <STDIN>;
+        chomp($choice);
+        if ($choice eq "y") {
+            $self->upgradeLand($cost);
+        }
+    } else {
+        # Owned by the opponent.
+        my $cost;
+        my $tax;
+        if ($self->{level} == 0) {
+            $cost = 500;
+            $tax = 0.1;
+        } elsif ($self->{level} == 1) {
+            $cost = 1000;
+            $tax = 0.15;
+        } elsif ($self->{level} == 2) {
+            $cost = 1500;
+            $tax = 0.2;
+        } elsif ($self->{level} == 3) {
+            $cost = 3000;
+            $tax = 0.25;
+        }
+        print("You need to pay player ".$self->{owner}->{name}." \$".$cost."\n");
+        $self->chargeToll($cost, $tax);
+    }
 
 }
 1;
