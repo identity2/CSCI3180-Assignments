@@ -1,3 +1,5 @@
+BEGIN { unshift @INC, "."; }
+
 use strict;
 use warnings;
 

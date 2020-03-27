@@ -20,3 +20,5 @@ sub stepOn {
 
     $main::cur_player->putToJail();
 }
+
+return 1;
