@@ -75,6 +75,9 @@ sub stepOn {
             $cost = 2000;
         } elsif ($self->{level} == 2) {
             $cost = 5000;
+        } else {
+            # Already highest level.
+            return;
         }
         print("Pay \$".$cost." to upgrade the land? [y/n]\n");
         my $choice = <STDIN>;

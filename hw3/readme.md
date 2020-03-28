@@ -1,2 +1,2 @@
 # Assignment 3: Perl & Python
-We have to implement the game Golden Hook Fishing and Monopoly using Perl and Python in this assignment. The concept of Static Scoping vs. Dynamic Scoping is explored.
+We have to implement the game Golden Hook Fishing and Monopoly using Perl and Python in this assignment. The concept of Static Scoping vs. Dynamic Scoping is explored. I precious lesson I learned is that people using dynamic scoping is committing offenses against public safety and should be put to programming jail. No offense btw, still enjoys Perl. Declaring `our $variable` is like programming in commie-style.

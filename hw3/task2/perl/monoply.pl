@@ -93,10 +93,9 @@ sub main {
         # Pay the $200 fixed fee.
         $cur_player->payDue();
 
-        # Player not in jail.
-        my $dice_step;
         if ($cur_player->{num_rounds_in_jail} == 0) {
-            # Throw the dice.
+            # Player not in jail. Throw the dice.
+            my $dice_step;
             print("Pay \$500 to throw two dice? [y/n]\n");
             my $choice = <STDIN>;
             
@@ -114,16 +113,19 @@ sub main {
                 $dice_step = throwDice();
             }
             
-            print("Points of dices: ".$dice_step."\n")
-        }
+            print("Points of dices: ".$dice_step."\n");
 
-        # Move the player and show new gameboard.
-        $cur_player->move($dice_step);
-        printGameBoard();
-        
-        # Perform slot action.
-        my $cur_slot = $game_board[$cur_player->{position}];
-        $cur_slot->stepOn();
+            # Move the player and show new gameboard.
+            $cur_player->move($dice_step);
+            printGameBoard();
+            
+            # Perform slot action.
+            my $cur_slot = $game_board[$cur_player->{position}];
+            $cur_slot->stepOn();
+        } else {
+            # In jail. Still moves to reduce prison term.
+            $cur_player->move(0);
+        }
 
         # Check if the game should end.
         if (termination_check()) {

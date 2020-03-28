@@ -1,2 +1,2 @@
 # Assignment 2: Python & Java
-In this assignment, we need to implement some games using Python and Java. The concepts of duck typing and dynamic typing are explored.
+In this assignment, we need to implement the game Six Men Morris and Save the Tribe using Python and Java. The concepts of duck typing and dynamic typing vs. static typing are explored. Despite teacher's attempt of praising duck typing, I still enjoy static typing more. Comon, just use interfaces. Idk why my classmates kept on saying: "Life is short, use Python." Poor religious souls.

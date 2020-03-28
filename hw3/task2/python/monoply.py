@@ -45,10 +45,11 @@ class Bank:
         print("Bank ", end='')
 
     def stepOn(self):
-
-        # ...
-
-        return
+        Player.tax_rate = 0
+        Player.income = 2000
+        Player.due = 0
+        cur_player.payDue()
+        print("You received $2000 from the Bank!")
 
 class Jail:
     def __init__(self):
@@ -58,18 +59,21 @@ class Jail:
         print("Jail ", end='')
 
     def stepOn(self):
-
-        # ...
+        print("Pay $1000 to reduce the prison round to 1? [y/n]")
+        choice = input()
+        if choice == "y":
+            Player.due = 1000
+            Player.handling_fee_rate = 0.1
+            Player.income = 0
+            Player.prison_rounds = 1
+            cur_player.payDue()
+        else:
+            Player.prison_rounds = 2
 
         cur_player.putToJail()
 
 
 class Land:
-    land_price = 1000
-    upgrade_fee = [1000, 2000, 5000]
-    toll = [500, 1000, 1500, 4000]
-    tax_rate = [0.1, 0.15, 0.2, 0.25]
-
     def __init__(self):
         self.owner = None
         self.level = 0
@@ -81,32 +85,72 @@ class Land:
             print("%s:Lv%d" % (self.owner.name, self.level), end="")
     
     def buyLand(self):
-
-        # ...
-
+        Player.due = 1000
+        Player.handling_fee_rate = 0.1
+        Player.income = 0
         cur_player.payDue()
+
+        self.owner = cur_player
     
-    def upgradeHouse(self):
-        
-        # ...
-
+    def upgradeLand(self, cost):
+        Player.handling_fee_rate = 0.1
+        Player.due = cost
+        Player.income = 0
         cur_player.payDue()
+
+        self.level = self.level + 1
     
-    def chargeToll(self):
-        
-        # ...
-
+    def chargeToll(self, cost, tax):
+        Player.due = cost
+        Player.handling_fee_rate = 0
+        Player.income = 0
         cur_player.payDue()
 
-        # ...
-
+        Player.due = 0
+        Player.income = cost
+        Player.tax_rate = tax
         self.owner.payDue()
 
     def stepOn(self):
-
-        # ... 
-
-        return
+        if self.owner == None:
+            # Unowned.
+            print("Pay $1000 to buy the land? [y/n]")
+            choice = input()
+            if choice == "y":
+                self.buyLand()
+        elif self.owner is cur_player:
+            # Owned by the player.
+            cost = 0
+            if self.level == 0:
+                cost = 1000
+            elif self.level == 1:
+                cost = 2000
+            elif self.level == 2:
+                cost = 5000
+            else:
+                # Already highest level.
+                return
+            print("Pay ${} to upgrade the land? [y/n]".format(cost))
+            choice = input()
+            if choice == "y":
+                self.upgradeLand(cost)
+        else:
+            cost = 0
+            tax = 0
+            if self.level == 0:
+                cost = 500
+                tax = 0.1
+            elif self.level == 1:
+                cost = 1000
+                tax = 0.15
+            elif self.level == 2:
+                cost = 1500
+                tax = 0.2
+            elif self.level == 3:
+                cost = 3000
+                tax = 0.25
+            print("You need to pay player {} ${}".format(self.owner.name, cost))
+            self.chargeToll(cost, tax)
 
 
 
@@ -161,10 +205,9 @@ def printGameBoard():
 
 
 def termination_check():
-
-    # ...
-
-    return True
+    if cur_player.money <= 0:
+        return True
+    return False
 
 
 def throwDice():
@@ -180,12 +223,61 @@ def main():
     global cur_round
     global cur_player_idx
 
-    while termination_check():
+    game_ended = False
+    while not game_ended:
         printGameBoard()
         for player in players:
             player.printAsset()
 
-    # ...
+        print("Player {}'s term.".format(cur_player.name))
+
+        # Pay the $200 fixed fee.
+        Player.due = 200
+        Player.handling_fee_rate = 0
+        Player.income = 0
+        cur_player.payDue()
+
+        if (cur_player.num_rounds_in_jail == 0):
+            # Player not in jail. Throw the dice.
+            dice_step = 0
+            print("Pay $500 to throw two dice? [y/n]")
+            choice = input()
+            
+            if choice == "y":
+                num_dices = 2
+                
+                Player.due = 500
+                Player.handling_fee_rate = 0.05
+                Player.income = 0
+                cur_player.payDue()
+            else:
+                num_dices = 1
+            
+            dice_step = throwDice()
+            print("Points of dices: {}.".format(dice_step))
+
+            # Move the player and show new gameboard.
+            cur_player.move(dice_step)
+            printGameBoard()
+
+            # Perform slot action.
+            cur_slot = game_board[cur_player.position]
+            cur_slot.stepOn()
+
+        else:
+            # In jail. Still moves to reduce prison term.
+            cur_player.move(0)
+
+        # Check if the game should end.
+        if termination_check():
+            game_ended = True
+
+        # Switch to the next player.
+        cur_player_idx = (cur_player_idx + 1) % num_players
+        cur_player = players[cur_player_idx]
+        
+    # Game over message.
+    print("Game over! winner: {}.".format(cur_player.name))
 
 
 if __name__ == '__main__':
