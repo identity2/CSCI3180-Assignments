@@ -118,23 +118,23 @@ sub main {
             my $dice_step;
             print("Pay \$500 to throw two dice? [y/n]\n");
 
-            my $choice = "n";
-            if ($cur_player->{money} < 500) {
-                print("You do not have enough money to throw two dice!\n");
-            } else {
-                $choice = <STDIN>;
-                chomp($choice);
-            }
+            my $choice = <STDIN>;
+            chomp($choice);
 
             if ($choice eq "y") {
-                local $num_dices = 2;      # dynamic scoping.
-                $dice_step = throwDice();
+                if ($cur_player->{money} < 525) {
+                    print("You do not have enough money to throw two dice!\n");
+                    $dice_step = throwDice();
+                } else {
+                    local $num_dices = 2;      # dynamic scoping.
+                    $dice_step = throwDice();
 
-                local $Player::due;        # dynamic scoping
-                local $Player::handling_fee_rate; # dynamic scoping
-                $Player::due = 500;   
-                $Player::handling_fee_rate = 0.05;
-                $cur_player->payDue();
+                    local $Player::due;        # dynamic scoping
+                    local $Player::handling_fee_rate; # dynamic scoping
+                    $Player::due = 500;   
+                    $Player::handling_fee_rate = 0.05;
+                    $cur_player->payDue();
+                }
             } else {
                 $dice_step = throwDice();
             }

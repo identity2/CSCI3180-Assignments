@@ -76,18 +76,18 @@ class Jail:
 
     def stepOn(self):
         print("Pay $1000 to reduce the prison round to 1? [y/n]")
-        choice = "n"
-        if cur_player.money < 1000:
-            print("You do not have enough money to reduce the prison round.")
-        else:
-            choice = input()
+        choice = input()
         
         if choice == "y":
-            Player.due = 1000
-            Player.handling_fee_rate = 0.1
-            Player.income = 0
-            Player.prison_rounds = 1
-            cur_player.payDue()
+            if cur_player.money < 1100:
+                print("You do not have enough money to reduce the prison round.")
+                Player.prison_rounds = 2
+            else:
+                Player.due = 1000
+                Player.handling_fee_rate = 0.1
+                Player.income = 0
+                Player.prison_rounds = 1
+                cur_player.payDue()
         else:
             Player.prison_rounds = 2
 
@@ -139,14 +139,14 @@ class Land:
         if self.owner == None:
             # Unowned.
             print("Pay $1000 to buy the land? [y/n]")
-            choice = "n"
-            if cur_player.money < 1000:
-                print("You do not have enough money to buy the land!")
-            else:
-                choice = input()
+            choice = input()
             
             if choice == "y":
-                self.buyLand()
+                if cur_player.money < 1100:
+                    print("You do not have enough money to buy the land!")
+                else:
+                    self.buyLand()
+
         elif self.owner is cur_player:
             # Owned by the player.
             cost = 0
@@ -161,14 +161,13 @@ class Land:
                 return
             print("Pay ${} to upgrade the land? [y/n]".format(cost))
             
-            choice = "n"
-            if cur_player.money < cost:
-                print("You do not have enough money to upgrade the land!")
-            else:
-                choice = input()
+            choice = input()
             
             if choice == "y":
-                self.upgradeLand(cost)
+                if cur_player.money < cost * 1.1:
+                    print("You do not have enough money to upgrade the land!")
+                else:
+                    self.upgradeLand(cost)
         else:
             cost = 0
             tax = 0
@@ -281,19 +280,19 @@ def main():
             dice_step = 0
             print("Pay $500 to throw two dice? [y/n]")
 
-            choice = "n"
-            if cur_player.money < 500:
-                print("You do not have enough money to throw two dice!")
-            else:
-                choice = input()
+            choice = input()                
             
             if choice == "y":
-                num_dices = 2
-                
-                Player.due = 500
-                Player.handling_fee_rate = 0.05
-                Player.income = 0
-                cur_player.payDue()
+                if cur_player.money < 525:
+                    print("You do not have enough money to throw two dice!")
+                    num_dices = 1
+                else:
+                    num_dices = 2
+                    
+                    Player.due = 500
+                    Player.handling_fee_rate = 0.05
+                    Player.income = 0
+                    cur_player.payDue()
             else:
                 num_dices = 1
             

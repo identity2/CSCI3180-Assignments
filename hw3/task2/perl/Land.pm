@@ -81,16 +81,15 @@ sub stepOn {
     if (!defined($self->{owner})) {
         # Unowned.
         print("Pay \$1000 to buy the land? [y/n]\n");
-        my $choice = "n";
-        if ($main::cur_player->{money} < 1000) {
-            print("You do not have enough money to buy the land!\n");
-        } else {
-            $choice = <STDIN>;
-            chomp($choice);
-        }
+        my $choice = <STDIN>;
+        chomp($choice);
         
         if ($choice eq "y") {
-            $self->buyLand();
+            if ($main::cur_player->{money} < 1100) {
+                print("You do not have enough money to buy the land!\n");
+            } else {
+                $self->buyLand();
+            }
         }
     } elsif ($self->{owner} == $main::cur_player) {
         # Owned by the player.
@@ -107,16 +106,15 @@ sub stepOn {
         }
         print("Pay \$".$cost." to upgrade the land? [y/n]\n");
         
-        my $choice = "n";
-        if ($main::cur_player->{money} < $cost) {
-            print("You do not have enough money to upgrade the land!\n");
-        } else {
-            $choice = <STDIN>;
-            chomp($choice);
-        }
+        my $choice = <STDIN>;
+        chomp($choice);
         
         if ($choice eq "y") {
-            $self->upgradeLand($cost);
+            if ($main::cur_player->{money} < $cost * 1.1) {
+                print("You do not have enough money to upgrade the land!\n");
+            } else {
+                $self->upgradeLand($cost);
+            }
         }
     } else {
         # Owned by the opponent.
