@@ -35,7 +35,6 @@ our $num_players = @players;
 our $cur_player_idx = 0;
 our $cur_player = $players[$cur_player_idx];
 our $cur_round = 0;
-our $max_rounds = 100;
 our $num_dices = 1;
 
 srand(0); # don't touch
@@ -80,7 +79,7 @@ sub printGameBoard {
     print("-"x (10 * ($num_players + 6)), "\n");
 }
 
-sub termination_check {
+sub terminationCheck {
     if ($cur_player->{money} <= 0) {
         return 1;
     }
@@ -106,15 +105,27 @@ sub main {
         print("Player ".$cur_player->{name}."'s term.\n");
         
         # Pay the $200 fixed fee.
-        $cur_player->payDue();
+        if ($cur_player->{money} < 200) {
+            local $Player::due;
+            $Player::due = $cur_player->{money};
+            $cur_player->payDue();
+        } else {
+            $cur_player->payDue();
+        }
 
         if ($cur_player->{num_rounds_in_jail} == 0) {
             # Player not in jail. Throw the dice.
             my $dice_step;
             print("Pay \$500 to throw two dice? [y/n]\n");
-            my $choice = <STDIN>;
-            
-            chomp($choice);
+
+            my $choice = "n";
+            if ($cur_player->{money} < 500) {
+                print("You do not have enough money to throw two dice!\n");
+            } else {
+                $choice = <STDIN>;
+                chomp($choice);
+            }
+
             if ($choice eq "y") {
                 local $num_dices = 2;      # dynamic scoping.
                 $dice_step = throwDice();
@@ -143,7 +154,7 @@ sub main {
         }
 
         # Check if the game should end.
-        if (termination_check()) {
+        if (terminationCheck()) {
             $game_ended = 1;
         }
 

@@ -62,6 +62,10 @@ sub chargeToll {
     my $cost = shift;
     my $tax = shift;
 
+    if ($main::cur_player->{money} < $cost) {
+        $cost = $main::cur_player->{money}
+    }
+
     local $Player::due = $cost;   # dynamic scoping
     $main::cur_player->payDue();
 
@@ -77,8 +81,14 @@ sub stepOn {
     if (!defined($self->{owner})) {
         # Unowned.
         print("Pay \$1000 to buy the land? [y/n]\n");
-        my $choice = <STDIN>;
-        chomp($choice);
+        my $choice = "n";
+        if ($main::cur_player->{money} < 1000) {
+            print("You do not have enough money to buy the land!\n");
+        } else {
+            $choice = <STDIN>;
+            chomp($choice);
+        }
+        
         if ($choice eq "y") {
             $self->buyLand();
         }
@@ -96,8 +106,15 @@ sub stepOn {
             return;
         }
         print("Pay \$".$cost." to upgrade the land? [y/n]\n");
-        my $choice = <STDIN>;
-        chomp($choice);
+        
+        my $choice = "n";
+        if ($main::cur_player->{money} < $cost) {
+            print("You do not have enough money to upgrade the land!\n");
+        } else {
+            $choice = <STDIN>;
+            chomp($choice);
+        }
+        
         if ($choice eq "y") {
             $self->upgradeLand($cost);
         }

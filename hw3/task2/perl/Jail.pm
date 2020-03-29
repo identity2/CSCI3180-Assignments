@@ -36,8 +36,14 @@ sub stepOn {
     my $self = shift;
 
     print("Pay \$1000 to reduce the prison round to 1? [y/n]\n");
-    my $choice = <STDIN>;
-    chomp($choice);
+    my $choice = "n";
+    if ($main::cur_player->{money} < 1000) {
+        print("You do not have enough money to reduce the prison round!\n");
+    } else {
+        $choice = <STDIN>;
+        chomp($choice);
+    }
+    
     if ($choice eq "y") {
         local $Player::due = 1000;               # dynamic scoping
         local $Player::handling_fee_rate = 0.1;  # dynamic scoping

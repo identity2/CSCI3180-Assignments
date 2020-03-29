@@ -58,7 +58,7 @@ sub putToJail {
     $self->{num_rounds_in_jail} = $prison_rounds;
 }
 
-sub printAsset{
+sub printAsset {
     my $self = shift;
     print("Player $self->{name}'s money: $self->{money}\n");
 }

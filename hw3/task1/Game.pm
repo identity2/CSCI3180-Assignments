@@ -39,7 +39,7 @@ sub new {
 
 # Initialize the player list by their names.
 # Params: obj ref, player names
-sub set_players {
+sub setPlayers {
     my $self = shift @_;
     my $players_name = shift @_;
 
@@ -109,7 +109,7 @@ sub showCards {
 
 # Start a new game.
 # Params: obj ref.
-sub start_game {
+sub startGame {
     my $self = shift @_;
 
     # Shuffle deck.

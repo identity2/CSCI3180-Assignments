@@ -76,7 +76,12 @@ class Jail:
 
     def stepOn(self):
         print("Pay $1000 to reduce the prison round to 1? [y/n]")
-        choice = input()
+        choice = "n"
+        if cur_player.money < 1000:
+            print("You do not have enough money to reduce the prison round.")
+        else:
+            choice = input()
+        
         if choice == "y":
             Player.due = 1000
             Player.handling_fee_rate = 0.1
@@ -117,6 +122,9 @@ class Land:
         self.level = self.level + 1
     
     def chargeToll(self, cost, tax):
+        if cur_player.money < cost:
+            cost = cur_player.money
+
         Player.due = cost
         Player.handling_fee_rate = 0
         Player.income = 0
@@ -131,7 +139,12 @@ class Land:
         if self.owner == None:
             # Unowned.
             print("Pay $1000 to buy the land? [y/n]")
-            choice = input()
+            choice = "n"
+            if cur_player.money < 1000:
+                print("You do not have enough money to buy the land!")
+            else:
+                choice = input()
+            
             if choice == "y":
                 self.buyLand()
         elif self.owner is cur_player:
@@ -147,7 +160,13 @@ class Land:
                 # Already highest level.
                 return
             print("Pay ${} to upgrade the land? [y/n]".format(cost))
-            choice = input()
+            
+            choice = "n"
+            if cur_player.money < cost:
+                print("You do not have enough money to upgrade the land!")
+            else:
+                choice = input()
+            
             if choice == "y":
                 self.upgradeLand(cost)
         else:
@@ -177,7 +196,6 @@ cur_player_idx = 0
 cur_player = players[cur_player_idx]
 num_dices = 1
 cur_round = 0
-max_round = 100
 
 game_board = [
     Bank(), Land(), Land(), Land(), Land(), Land(), Land(), Land(), Land(), Jail(),
@@ -220,7 +238,7 @@ def printGameBoard():
     print("-" * (10 * (num_players + 6)))
 
 
-def termination_check():
+def terminationCheck():
     if cur_player.money <= 0:
         return True
     return False
@@ -248,16 +266,26 @@ def main():
         print("Player {}'s term.".format(cur_player.name))
 
         # Pay the $200 fixed fee.
-        Player.due = 200
-        Player.handling_fee_rate = 0
-        Player.income = 0
+        if cur_player.money < 200:
+            Player.due = cur_player.money
+            Player.handling_fee_rate = 0
+            Player.income = 0
+        else:
+            Player.due = 200
+            Player.handling_fee_rate = 0
+            Player.income = 0
         cur_player.payDue()
 
         if (cur_player.num_rounds_in_jail == 0):
             # Player not in jail. Throw the dice.
             dice_step = 0
             print("Pay $500 to throw two dice? [y/n]")
-            choice = input()
+
+            choice = "n"
+            if cur_player.money < 500:
+                print("You do not have enough money to throw two dice!")
+            else:
+                choice = input()
             
             if choice == "y":
                 num_dices = 2
@@ -285,7 +313,7 @@ def main():
             cur_player.move(0)
 
         # Check if the game should end.
-        if termination_check():
+        if terminationCheck():
             game_ended = True
 
         # Switch to the next player.
