@@ -29,7 +29,7 @@ sub new {
     my @players = ();
     my @cards = ();
     my $self = {
-        "deck" => Deck->new(),
+        "deck" => MannerDeckStudent->new(),
         "players" => \@players,
         "cards" => \@cards,
     };
