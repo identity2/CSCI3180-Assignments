@@ -77,6 +77,10 @@ class Jail:
     def stepOn(self):
         print("Pay $1000 to reduce the prison round to 1? [y/n]")
         choice = input()
+
+        while choice != "y" and choice != "n":
+            print("Pay $1000 to reduce the prison round to 1? [y/n]")
+            choice = input()
         
         if choice == "y":
             if cur_player.money < 1100:
@@ -140,6 +144,9 @@ class Land:
             # Unowned.
             print("Pay $1000 to buy the land? [y/n]")
             choice = input()
+            while choice != "y" and choice != "n":
+                print("Pay $1000 to buy the land? [y/n]")
+                choice = input()
             
             if choice == "y":
                 if cur_player.money < 1100:
@@ -162,6 +169,9 @@ class Land:
             print("Pay ${} to upgrade the land? [y/n]".format(cost))
             
             choice = input()
+            while choice != "y" and choice != "n":
+                print("Pay ${} to upgrade the land? [y/n]".format(cost))
+                choice = input()
             
             if choice == "y":
                 if cur_player.money < cost * 1.1:
@@ -279,8 +289,10 @@ def main():
             # Player not in jail. Throw the dice.
             dice_step = 0
             print("Pay $500 to throw two dice? [y/n]")
-
-            choice = input()                
+            choice = input()
+            while choice != "y" and choice != "n":
+                print("Pay $500 to throw two dice? [y/n]")
+                choice = input()
             
             if choice == "y":
                 if cur_player.money < 525:

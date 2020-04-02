@@ -83,6 +83,11 @@ sub stepOn {
         print("Pay \$1000 to buy the land? [y/n]\n");
         my $choice = <STDIN>;
         chomp($choice);
+        while ($choice ne "y" && $choice ne "n") {
+            print("Pay \$1000 to buy the land? [y/n]\n");
+            $choice = <STDIN>;
+            chomp($choice);
+        }
         
         if ($choice eq "y") {
             if ($main::cur_player->{money} < 1100) {
@@ -108,6 +113,11 @@ sub stepOn {
         
         my $choice = <STDIN>;
         chomp($choice);
+        while ($choice ne "y" && $choice ne "n") {
+            print("Pay \$".$cost." to upgrade the land? [y/n]\n");
+            $choice = <STDIN>;
+            chomp($choice);
+        }
         
         if ($choice eq "y") {
             if ($main::cur_player->{money} < $cost * 1.1) {

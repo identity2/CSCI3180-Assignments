@@ -120,6 +120,11 @@ sub main {
 
             my $choice = <STDIN>;
             chomp($choice);
+            while ($choice ne "y" && $choice ne "n") {
+                print("Pay \$500 to throw two dice? [y/n]\n");
+                $choice = <STDIN>;
+                chomp($choice);
+            }
 
             if ($choice eq "y") {
                 if ($cur_player->{money} < 525) {

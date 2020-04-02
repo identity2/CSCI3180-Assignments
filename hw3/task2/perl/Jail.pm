@@ -38,6 +38,11 @@ sub stepOn {
     print("Pay \$1000 to reduce the prison round to 1? [y/n]\n");
     my $choice = <STDIN>;
     chomp($choice);
+    while ($choice ne "y" && $choice ne "n") {
+        print("Pay \$1000 to reduce the prison round to 1? [y/n]\n");
+        $choice = <STDIN>;
+        chomp($choice);
+    }
     
     if ($choice eq "y") {
         if ($main::cur_player->{money} < 1100) {
