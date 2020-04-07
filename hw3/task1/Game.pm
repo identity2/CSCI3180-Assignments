@@ -44,7 +44,7 @@ sub setPlayers {
     my $players_name = shift @_;
 
     # Check if the player numbers divide 52.
-    if (52 % @$players_name != 0) {
+    if (@$players_name == 0 || 52 % @$players_name != 0) {
         print "Error: cards' number 52 can not be divided by players number ";
         print @$players_name."!\n";
         return 0;
