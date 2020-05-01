@@ -57,7 +57,7 @@ check_pair ([(Spades, 10), (Hearts, 10), (Clubs, 8), (Diamonds, 6), (Spades, 4)]
 check_pair ([(Spades, 10), (Hearts, 8), (Clubs, 8), (Diamonds, 6), (Spades, 4)]); (* (Pair, [(8, 2), (10, 1), (6, 1), (4, 1)]) *)
 check_pair ([(Spades, 10), (Hearts, 8), (Clubs, 6), (Diamonds, 6), (Spades, 4)]); (* (Pair, [(6, 2), (10, 1), (8, 1), (4, 1)]) *)
 check_pair ([(Spades, 10), (Hearts, 8), (Clubs, 6), (Diamonds, 4), (Spades, 4)]); (* (Pair, [(4, 2), (10, 1), (8, 1), (6, 1)]) *)
-check_pair ([(Spades, 10), (Hearts, 8), (Clubs, 6), (Diamonds, 4), (Spades, 2)]); (* (Nothing, []) *)
+check_pair ([(Spades, 10), (Hearts, 8), (Clubs, 6), (Diamonds, 4), (Spades, 2)]); (* (Nothing, [(10, 1), (8,1), (6,1), (4,1), (2,1)]) *)
 
 count_patterns [(Clubs, 13), (Clubs, 11), (Spades, 7), (Spades, 3), (Hearts, 2)]; (* (Nothing, [(13,1),(11,1),(7,1),(3,1),(2,1)]) *)
 count_patterns [(Spades, 11), (Spades, 9), (Hearts, 8), (Diamonds, 8), (Diamonds, 3)]; (* (Pair, [(8,2),(11,1),(9,1),(3,1)]) *)
